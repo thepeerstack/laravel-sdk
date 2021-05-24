@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Thepeer\Sdk\Exceptions\InvalidPayloadException;
 use Thepeer\Sdk\Exceptions\InvalidReceiptException;
 use Thepeer\Sdk\Exceptions\InvalidSecretKeyException;
-use Thepeer\Sdk\Exceptions\InvalidSignatureException;
 use Thepeer\Sdk\Exceptions\SeverErrorException;
 use Thepeer\Sdk\Exceptions\UserNotFoundException;
 
@@ -52,7 +51,7 @@ class Thepeer
             return true;
         }
 
-        throw new InvalidSignatureException("signature does not match");
+        return false;
     }
 
     public function getReceipt($receipt)
