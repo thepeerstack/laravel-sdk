@@ -1,0 +1,58 @@
+{
+  "name": "thepeer/sdk",
+  "type": "library",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Michael Okoh",
+      "email": "trojan@thepeer.co"
+    }
+  ],
+  "minimum-stability": "dev",
+  "autoload": {
+    "psr-4": {
+      "Thepeer\\Sdk\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Thepeer\\Sdk\\Test\\": "tests"
+    }
+  },
+  "scripts": {
+    "test": "vendor/bin/phpunit tests"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Thepeer\\Sdk\\ThepeerServiceProvider"
+      ]
+    }
+  },
+  "require": {
+    "illuminate/support": "^5.0 || ^6.0 || ^7.0 || ^8.0",
+    "guzzlehttp/guzzle": "~6|~7"
+  },
+  "require-dev": {
+    "mockery/mockery": "^1.0",
+    "orchestra/testbench": "3.8.*|4.*",
+    "phpunit/phpunit": "^8.0",
+    "illuminate/contracts": "^5.8.15|^6.0",
+    "illuminate/filesystem": "^5.8.15|^6.0",
+    "illuminate/database": "^5.8.15|^6.0",
+    "phpunit/php-code-coverage": "^7.0@dev"
+  },
+  "description": "Thepeer official Laravel SDK",
+  "keywords": [
+    "php",
+    "github",
+    "laravel",
+    "Open Source",
+    "payments",
+    "thepeer",
+    "peerstack",
+    "laravel 6",
+    "laravel 7",
+    "laravel 8"
+  ]
+}
