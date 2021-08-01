@@ -57,7 +57,7 @@ class Thepeer
     public function getReceipt($receipt)
     {
         try {
-            $request = $this->client->get("/verify/{$receipt}");
+            $request = $this->client->get("/send/{$receipt}");
 
             $payload = json_decode($request->getBody()->getContents());
 
@@ -97,7 +97,7 @@ class Thepeer
     public function indexUser(string $name, string $email, string $identifier)
     {
         try {
-            $request = $this->client->post("/users/index", [
+            $request = $this->client->post("/users", [
                 "body" => json_encode([
                     'name' => $name,
                     'email' => $email,
@@ -128,7 +128,7 @@ class Thepeer
     public function updateUser(string $reference, string $identifier)
     {
         try {
-            $request = $this->client->put("/users/update/{$reference}", [
+            $request = $this->client->put("/users/{$reference}", [
                 "body" => json_encode([
                     'identifier' => $identifier
                 ])
@@ -159,7 +159,7 @@ class Thepeer
     public function deleteUser(string $reference)
     {
         try {
-            $request = $this->client->delete("/users/delete/{$reference}");
+            $request = $this->client->delete("/users/{$reference}");
 
             $payload = json_decode($request->getBody()->getContents());
 
