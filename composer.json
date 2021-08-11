@@ -31,7 +31,8 @@
   },
   "require": {
     "illuminate/support": "^5.0 || ^6.0 || ^7.0 || ^8.0",
-    "guzzlehttp/guzzle": "~6|~7"
+    "guzzlehttp/guzzle": "~6|~7",
+    "ext-json": "*"
   },
   "require-dev": {
     "mockery/mockery": "^1.0",
