@@ -13,24 +13,29 @@ composer install thepeer/sdk
 ```php
 <?php
 
-$thepeer = new \Thepeer\Sdk\Thepeer("your-secret-key");
+use Thepeer\Sdk\Thepeer;
+
+$thepeer = new Thepeer("your-secret-key");
+
+$thepeer->chargeLink("lost-in-the-world", 5000, "Benz");
 ```
 
 ### Available methods
 
 * validateSiganture
     - `accepts`: 
-        - request object
+        - request (object)
     - `returns`: boolean
     
-* getReceipt
+* getSendReceipt
     - `accepts`: 
-        - reference
+        - receipt_id (string)
     - `returns`: object
     
-* processReceipt
+* processSendReceipt
     - `accepts`: 
-        - reference (string)
+        - receipt_id (string)
+        - insufficient_funds (bool)
     - `returns`: object
     
 * indexUser
@@ -50,7 +55,24 @@ $thepeer = new \Thepeer\Sdk\Thepeer("your-secret-key");
     - `accepts`:
         - reference (string)
     - `returns`: boolean
+    
+* getLink
+    - `accepts`:
+        - lind_id (string)
+    - `returns`: object
+
+* chargeLink
+    - `accepts`:
+        - lind_id (string)
+        - amount (integer)
+    - `returns`: object
+    
+* authorizaDirectCharge
+    - `accepts`:
+        - reference (string)
+        - insufficient_funds (bool)
+    - `returns`: object
 
 ## Extra
 
-Refer to the [documentation](https://documenter.getpostman.com/view/2370026/TzJu8wdy) for more information.
+Refer to the [documentation](https://docs.theper.co) for more information.

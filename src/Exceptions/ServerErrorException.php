@@ -4,7 +4,7 @@ namespace Thepeer\Sdk\Exceptions;
 
 use Exception;
 
-class UserNotFoundException extends Exception
+class ServerErrorException extends Exception
 {
 
 }

@@ -4,7 +4,7 @@ namespace Thepeer\Sdk\Exceptions;
 
 use Exception;
 
-class InvalidSecretKeyException extends Exception
+class UnauthorizedException extends Exception
 {
 
 }

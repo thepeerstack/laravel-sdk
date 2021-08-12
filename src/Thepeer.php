@@ -5,11 +5,13 @@ namespace Thepeer\Sdk;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
+use Thepeer\Sdk\Exceptions\ForbiddenException;
 use Thepeer\Sdk\Exceptions\InvalidPayloadException;
-use Thepeer\Sdk\Exceptions\InvalidReceiptException;
-use Thepeer\Sdk\Exceptions\InvalidSecretKeyException;
-use Thepeer\Sdk\Exceptions\SeverErrorException;
-use Thepeer\Sdk\Exceptions\UserNotFoundException;
+use Thepeer\Sdk\Exceptions\InvalidResourceException;
+use Thepeer\Sdk\Exceptions\NotAcceptableException;
+use Thepeer\Sdk\Exceptions\ServiceUnavailableException;
+use Thepeer\Sdk\Exceptions\UnauthorizedException;
+use Thepeer\Sdk\Exceptions\ServerErrorException;
 
 class Thepeer
 {
@@ -54,43 +56,33 @@ class Thepeer
         return false;
     }
 
-    public function getReceipt($receipt)
+    public function getSendReceipt(string $receipt)
     {
         try {
             $request = $this->client->get("/send/{$receipt}");
 
             $payload = json_decode($request->getBody()->getContents());
 
-            if ($request->getStatusCode() === 401) {
-                throw new InvalidSecretKeyException($payload->message);
-            } else if ($request->getStatusCode() === 404) {
-                throw new InvalidReceiptException($payload->message);
-            } else if ($request->getStatusCode() === 200) {
-                return $payload;
-            }
-
-            throw new SeverErrorException("something went wrong");
+            return $this->processResponse($payload, $request);
         } catch (GuzzleException $e) {
-            throw new SeverErrorException($e->getMessage());
+            throw new ServerErrorException($e->getMessage());
         }
     }
 
-    public function processReceipt($receipt)
+    public function processSendReceipt(string $receipt, bool $insufficient_funds)
     {
         try {
-            $request = $this->client->post("/send/{$receipt}");
+            $request = $this->client->post("/send/{$receipt}", [
+                "body" => json_encode([
+                    'insufficient_funds' => $insufficient_funds,
+                ])
+            ]);
 
-            if ($request->getStatusCode() === 401) {
-                throw new InvalidSecretKeyException("invalid secret key");
-            } else if ($request->getStatusCode() === 404) {
-                throw new InvalidReceiptException("invalid receipt");
-            } else if ($request->getStatusCode() === 200) {
-                return json_decode($request->getBody()->getContents());
-            }
+            $payload = json_decode($request->getBody()->getContents());
 
-            throw new SeverErrorException("something went wrong");
+            return $this->processResponse($payload, $request);
         } catch (GuzzleException $e) {
-            throw new SeverErrorException($e->getMessage());
+            throw new ServerErrorException($e->getMessage());
         }
     }
 
@@ -107,21 +99,9 @@ class Thepeer
 
             $payload = json_decode($request->getBody()->getContents());
 
-            if ($request->getStatusCode() === 401) {
-                throw new InvalidSecretKeyException($payload->message);
-            } else if ($request->getStatusCode() === 406) {
-                throw new InvalidPayloadException($payload->message);
-            } else if ($request->getStatusCode() === 422) {
-                foreach ($payload->errors as $error) {
-                    throw new InvalidPayloadException($error[0]);
-                }
-            } else if ($request->getStatusCode() === 200) {
-                return $payload;
-            }
-
-            throw new SeverErrorException("something went wrong");
+            return $this->processResponse($payload, $request);
         } catch (GuzzleException $e) {
-            throw new SeverErrorException($e->getMessage());
+            throw new ServerErrorException($e->getMessage());
         }
     }
 
@@ -136,23 +116,9 @@ class Thepeer
 
             $payload = json_decode($request->getBody()->getContents());
 
-            if ($request->getStatusCode() === 401) {
-                throw new InvalidSecretKeyException("invalid secret key");
-            } else if ($request->getStatusCode() === 406) {
-                throw new InvalidPayloadException($payload->message);
-            } else if ($request->getStatusCode() === 404) {
-                throw new UserNotFoundException($payload->message);
-            } else if ($request->getStatusCode() === 422) {
-                foreach ($payload->errors as $error) {
-                    throw new InvalidPayloadException($error[0]);
-                }
-            } else if ($request->getStatusCode() === 200) {
-                return $payload;
-            }
-
-            throw new SeverErrorException("something went wrong");
+            return $this->processResponse($payload, $request);
         } catch (GuzzleException $e) {
-            throw new SeverErrorException($e->getMessage());
+            throw new ServerErrorException($e->getMessage());
         }
     }
 
@@ -163,23 +129,82 @@ class Thepeer
 
             $payload = json_decode($request->getBody()->getContents());
 
-            if ($request->getStatusCode() === 401) {
-                throw new InvalidSecretKeyException("invalid secret key");
-            } else if ($request->getStatusCode() === 406) {
-                throw new InvalidPayloadException($payload->message);
-            } else if ($request->getStatusCode() === 404) {
-                throw new UserNotFoundException($payload->message);
-            } else if ($request->getStatusCode() === 422) {
+            return $this->processResponse($payload, $request);
+        } catch (GuzzleException $e) {
+            throw new ServerErrorException($e->getMessage());
+        }
+    }
+
+    public function getLink(string $link)
+    {
+        try {
+            $request = $this->client->get("/link/{$link}");
+
+            $payload = json_decode($request->getBody()->getContents());
+
+            return $this->processResponse($payload, $request);
+        } catch (GuzzleException $e) {
+            throw new ServerErrorException($e->getMessage());
+        }
+    }
+
+    public function chargeLink(string $link, int $amount, string $remark)
+    {
+        try {
+            $request = $this->client->post("/link/{$link}/charge", [
+                "body" => json_encode([
+                    'amount' => $amount,
+                    'remark' => $remark
+                ])
+            ]);
+
+            $payload = json_decode($request->getBody()->getContents());
+
+            return $this->processResponse($payload, $request);
+        } catch (GuzzleException $e) {
+            throw new ServerErrorException($e->getMessage());
+        }
+    }
+
+    public function authorizaDirectCharge(string $reference, bool $insufficient_funds)
+    {
+        try {
+            $request = $this->client->post("/debit/{$reference}", [
+                "body" => json_encode([
+                    'insufficient_funds' => $insufficient_funds,
+                ])
+            ]);
+
+            $payload = json_decode($request->getBody()->getContents());
+
+            return $this->processResponse($payload, $request);
+        } catch (GuzzleException $e) {
+            throw new ServerErrorException($e->getMessage());
+        }
+    }
+
+    private function processResponse($payload, $request)
+    {
+        switch ($request->getStatusCode()) {
+            case 201:
+            case 200:
+                return $payload;
+            case 401:
+                throw new UnauthorizedException($payload->message);
+            case 403:
+                throw new ForbiddenException($payload->message);
+            case 404:
+                throw new InvalidResourceException($payload->message);
+            case 422:
                 foreach ($payload->errors as $error) {
                     throw new InvalidPayloadException($error[0]);
                 }
-            } else if ($request->getStatusCode() === 200) {
-                return true;
-            }
-
-            throw new SeverErrorException("something went wrong");
-        } catch (GuzzleException $e) {
-            throw new SeverErrorException($e->getMessage());
+            case 406:
+                throw new NotAcceptableException($payload->message);
+            case 503:
+                throw new ServiceUnavailableException($payload->message);
+            default:
+                throw new ServerErrorException($payload->message);
         }
     }
 }
