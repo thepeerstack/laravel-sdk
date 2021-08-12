@@ -1,5 +1,7 @@
 # Thepeer Laravel SDK
 
+<img width="732" alt="Screen Shot 2021-08-12 at 12 27 51 PM" src="https://user-images.githubusercontent.com/5338836/129189446-8acf40d3-5dd2-441c-a50c-2a9aa84b360c.png">
+
 ## Installation
 
 ```bash
