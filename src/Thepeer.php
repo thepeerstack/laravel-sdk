@@ -166,7 +166,7 @@ class Thepeer
         }
     }
 
-    public function authorizaDirectCharge(string $reference, bool $insufficient_funds)
+    public function authorizeDirectCharge(string $reference, bool $insufficient_funds)
     {
         try {
             $request = $this->client->post("/debit/{$reference}", [
