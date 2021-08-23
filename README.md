@@ -77,4 +77,4 @@ $thepeer->chargeLink("lost-in-the-world", 5000, "Benz");
 
 ## Extra
 
-Refer to the [documentation](https://docs.theper.co) for more information.
+Refer to the [documentation](https://docs.thepeer.co/) for more information.
