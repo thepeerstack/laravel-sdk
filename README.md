@@ -5,7 +5,7 @@
 ## Installation
 
 ```bash
-composer install thepeer/sdk
+composer require thepeer/sdk
 ```
 
 ## Usage
