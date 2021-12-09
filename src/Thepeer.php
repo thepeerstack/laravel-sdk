@@ -49,11 +49,7 @@ class Thepeer
 
         $calculatedSignature = hash_hmac('sha1', json_encode($payload->all()), $this->secretKey);
 
-        if ($headerSignature === $calculatedSignature) {
-            return true;
-        }
-
-        return false;
+       return $headerSignature === $calculatedSignature;
     }
 
     public function getSendReceipt(string $receipt)
@@ -69,12 +65,12 @@ class Thepeer
         }
     }
 
-    public function processSendReceipt(string $receipt, bool $insufficient_funds)
+    public function processSendReceipt(string $receipt, string $event)
     {
         try {
             $request = $this->client->post("/send/{$receipt}", [
                 "body" => json_encode([
-                    'insufficient_funds' => $insufficient_funds,
+                    'event' => $event,
                 ])
             ]);
 
@@ -166,12 +162,12 @@ class Thepeer
         }
     }
 
-    public function authorizeDirectCharge(string $reference, bool $insufficient_funds)
+    public function authorizeDirectCharge(string $reference, string $event)
     {
         try {
             $request = $this->client->post("/debit/{$reference}", [
                 "body" => json_encode([
-                    'insufficient_funds' => $insufficient_funds,
+                    'event' => $event,
                 ])
             ]);
 

@@ -37,7 +37,7 @@ $thepeer->chargeLink("lost-in-the-world", 5000, "Benz");
 * processSendReceipt
     - `accepts`: 
         - receipt_id (string)
-        - insufficient_funds (bool)
+        - event (string)
     - `returns`: object
     
 * indexUser
@@ -72,7 +72,7 @@ $thepeer->chargeLink("lost-in-the-world", 5000, "Benz");
 * authorizaDirectCharge
     - `accepts`:
         - reference (string)
-        - insufficient_funds (bool)
+        - event (string)
     - `returns`: object
 
 ## Extra
