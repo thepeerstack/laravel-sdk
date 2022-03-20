@@ -52,36 +52,6 @@ class Thepeer
        return $headerSignature === $calculatedSignature;
     }
 
-    public function getSendReceipt(string $receipt)
-    {
-        try {
-            $request = $this->client->get("/send/{$receipt}");
-
-            $payload = json_decode($request->getBody()->getContents());
-
-            return $this->processResponse($payload, $request);
-        } catch (GuzzleException $e) {
-            throw new ServerErrorException($e->getMessage());
-        }
-    }
-
-    public function processSendReceipt(string $receipt, string $event)
-    {
-        try {
-            $request = $this->client->post("/send/{$receipt}", [
-                "body" => json_encode([
-                    'event' => $event,
-                ])
-            ]);
-
-            $payload = json_decode($request->getBody()->getContents());
-
-            return $this->processResponse($payload, $request);
-        } catch (GuzzleException $e) {
-            throw new ServerErrorException($e->getMessage());
-        }
-    }
-
     public function indexUser(string $name, string $email, string $identifier)
     {
         try {
@@ -162,10 +132,10 @@ class Thepeer
         }
     }
 
-    public function authorizeDirectCharge(string $reference, string $event)
+    public function authorizeCharge(string $reference, string $event)
     {
         try {
-            $request = $this->client->post("/debit/{$reference}", [
+            $request = $this->client->post("/authorization/{$reference}", [
                 "body" => json_encode([
                     'event' => $event,
                 ])
