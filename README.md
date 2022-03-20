@@ -29,17 +29,6 @@ $thepeer->chargeLink("lost-in-the-world", 5000, "Benz");
         - request (object)
     - `returns`: boolean
     
-* getSendReceipt
-    - `accepts`: 
-        - receipt_id (string)
-    - `returns`: object
-    
-* processSendReceipt
-    - `accepts`: 
-        - receipt_id (string)
-        - event (string)
-    - `returns`: object
-    
 * indexUser
     - `accepts`:
         - name (string)
@@ -60,16 +49,16 @@ $thepeer->chargeLink("lost-in-the-world", 5000, "Benz");
     
 * getLink
     - `accepts`:
-        - lind_id (string)
+        - link_id (string)
     - `returns`: object
 
 * chargeLink
     - `accepts`:
-        - lind_id (string)
+        - link_id (string)
         - amount (integer)
     - `returns`: object
     
-* authorizaDirectCharge
+* authorizeCharge
     - `accepts`:
         - reference (string)
         - event (string)
