@@ -63,6 +63,10 @@ $thepeer->chargeLink("lost-in-the-world", 5000, "Benz");
         - reference (string)
         - event (string)
     - `returns`: object
+* getBusinesses
+    - `accepts`:
+        - channel (string)
+    - `returns`: object
 
 ## Extra
 
