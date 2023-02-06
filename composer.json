@@ -6,6 +6,10 @@
     {
       "name": "Michael Okoh",
       "email": "trojan@thepeer.co"
+    },
+    {
+      "name": "Idorenyin Udoh",
+      "email": "idorenyin@thepeer.co"
     }
   ],
   "minimum-stability": "dev",
