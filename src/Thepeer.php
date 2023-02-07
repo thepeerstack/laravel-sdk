@@ -149,6 +149,19 @@ class Thepeer
         }
     }
 
+	public function getBusinesses(string $channel)
+	{
+		try {
+			$request = $this->client->get("/businesses?channel={$channel}");
+
+			$payload = json_decode($request->getBody()->getContents());
+
+			return $this->processResponse($payload, $request);
+		} catch (GuzzleException $e) {
+			throw new ServerErrorException($e->getMessage());
+		}
+	}
+
     private function processResponse($payload, $request)
     {
         switch ($request->getStatusCode()) {
